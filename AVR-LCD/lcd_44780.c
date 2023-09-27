@@ -124,15 +124,16 @@ void lcd_write_char(char data)
 	lcd_write_byte(data);
 }
 
-
-void lcd_write_text(char* text)
+void lcd_write_text(char* text, uint8_t row, uint8_t col)
 {
-	while(*text)
+	lcd_cursor(col, row);
+	while(*text && row < LCD_ROW)
 	{
 		lcd_write_char(*text++);
+		if(++col % LCD_COL == 0)
+			lcd_cursor(0, ++row);
 	}
 }
-
 
 void lcd_cursor(uint8_t x, uint8_t y)
 {
@@ -180,18 +181,6 @@ void lcd_cls(void)
 		_delay_ms(4.1);
 	#endif
 }
-
-void lcd_shift_text(char* text)
-{
-/*	0,  1,  2  ... 17,  18,  19
-	64, 65, 66 ... 81,  82,  83
-	20, 21, 22 ... 37,  38,  39
-	84, 85, 86 ... 101, 102, 103*/
-	uint8_t LINE_21_DIFF = 0x19;
-	uint8_t text_size = sizeof(*text);
-	// TODO
-}
-
 
 void lcd_init(void)
 {

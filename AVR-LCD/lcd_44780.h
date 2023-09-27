@@ -70,10 +70,10 @@
 /*Public LCD functions*/
 void lcd_init(void);
 void lcd_cursor(uint8_t x, uint8_t y);
-void lcd_write_text(char* text);
 void lcd_write_char(char data);
 void lcd_cls(void);
 void lcd_cursor_on(void);
 void lcd_cursor_off(void);
+void lcd_write_text(char* text, uint8_t row, uint8_t col);
 
 #endif

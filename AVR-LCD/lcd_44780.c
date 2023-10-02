@@ -135,6 +135,15 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
 	}
 }
 
+void lcd_write_text_center(char* text, uint8_t row)
+{
+	uint8_t c_char = 1;
+	while(*text++)
+		c_char++;
+	text = text - c_char;
+	lcd_write_text(text, row, LCD_COL > c_char ? (LCD_COL - c_char)/2 + 1 : 0);
+}
+
 void lcd_cursor(uint8_t x, uint8_t y)
 {
 	switch(y)

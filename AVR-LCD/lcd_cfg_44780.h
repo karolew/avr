@@ -38,4 +38,9 @@
 #define LCD_D7_PORT         D
 #define LCD_D7_PIN          5
 
+/* Enables/disables lighter version of library.
+ * If LCD_FULL set to 0 following functionalities will NOT be available:
+ * lcd_write_text_center */
+#define LCD_FULL            1
+
 #endif

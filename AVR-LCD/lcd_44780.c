@@ -135,6 +135,7 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
 	}
 }
 
+#if LCD_FULL
 void lcd_write_text_center(char* text, uint8_t row)
 {
 	uint8_t c_char = 1;
@@ -143,6 +144,7 @@ void lcd_write_text_center(char* text, uint8_t row)
 	text = text - c_char;
 	lcd_write_text(text, row, LCD_COL > c_char ? (LCD_COL - c_char)/2 + 1 : 0);
 }
+#endif
 
 void lcd_cursor(uint8_t x, uint8_t y)
 {

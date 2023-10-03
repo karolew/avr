@@ -75,6 +75,8 @@ void lcd_cls(void);
 void lcd_cursor_on(void);
 void lcd_cursor_off(void);
 void lcd_write_text(char* text, uint8_t row, uint8_t col);
+#if LCD_FULL
 void lcd_write_text_center(char* text, uint8_t row);
+#endif
 
 #endif

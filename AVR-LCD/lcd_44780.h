@@ -72,11 +72,21 @@ void lcd_init(void);
 void lcd_cursor(uint8_t x, uint8_t y);
 void lcd_write_char(char data);
 void lcd_cls(void);
-void lcd_cursor_on(void);
-void lcd_cursor_off(void);
 void lcd_write_text(char* text, uint8_t row, uint8_t col);
-#if LCD_FULL
-void lcd_write_text_center(char* text, uint8_t row);
+#if CFG_CURSOR_ON
+    void lcd_cursor_on(void);
+#endif
+#if CFG_CURSOR_OFF
+    void lcd_cursor_off(void);
+#endif
+#if CFG_SHIFT_RIGHT
+    void lcd_shift_right(uint8_t col);
+#endif
+#if CFG_SHIFT_RIGHT
+    void lcd_shift_left(uint8_t col);
+#endif
+#if CFG_WRITE_TEXT_CENTER
+    void lcd_write_text_center(char* text, uint8_t row);
 #endif
 
 #endif

@@ -121,7 +121,8 @@ void lcd_write_cmd(uint8_t cmd)
 void lcd_write_char(char data)
 {
 	SET_RS;
-	lcd_write_byte(data);
+	/* 0x80 - 0x87 CGRAM addresses used to map 0 - 7 ASCII codes */
+	lcd_write_byte((data <= 0x87 && data >= 0x80) ? data & 0x07 : data);
 }
 
 void lcd_write_text(char* text, uint8_t row, uint8_t col)
@@ -135,15 +136,58 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
 	}
 }
 
-#if LCD_FULL
-void lcd_write_text_center(char* text, uint8_t row)
-{
-	uint8_t c_char = 1;
-	while(*text++)
-		c_char++;
-	text = text - c_char;
-	lcd_write_text(text, row, LCD_COL > c_char ? (LCD_COL - c_char)/2 + 1 : 0);
-}
+#if CFG_CURSOR_ON
+    void lcd_cursor_on(void)
+    {
+        lcd_write_cmd( LCD_ONOFF | LCD_DISP_ON | LCD_CURSOR_ON );
+        #if LCD_RW == 0
+            _delay_ms(4.1);
+        #endif
+    }
+#endif
+#if CFG_CURSOR_OFF
+    void lcd_cursor_off(void)
+    {
+        lcd_write_cmd( LCD_ONOFF | LCD_DISP_ON | LCDC_CURSOR_OFF );
+        #if LCD_RW == 0
+            _delay_ms(4.1);
+        #endif
+    }
+#endif
+#if CFG_SHIFT_RIGHT
+    void lcd_shift_right(uint8_t col)
+    {
+        while(col--)
+        {
+            lcd_write_cmd( LCD_SHIFT | LCDC_SHIFT_DISP | LCDC_SHIFT_RIGHT );
+            #if LCD_RW == 0
+                _delay_ms(4.1);
+            #endif
+        }
+    }
+#endif
+#if CFG_SHIFT_LEFT
+    void lcd_shift_left(uint8_t col)
+    {
+        while(col--)
+        {
+            lcd_write_cmd( LCD_SHIFT | LCDC_SHIFT_DISP | LCDC_SHIFT_LEFT );
+            #if LCD_RW == 0
+                _delay_ms(4.1);
+            #endif
+        }
+    }
+#endif
+#if CFG_WRITE_TEXT_CENTER
+    void lcd_write_text_center(char* text, uint8_t row)
+    {
+        uint8_t c_char = 1;
+        while(*text++)
+            c_char++;
+        text = text - c_char;
+        lcd_write_text(text, row, LCD_COL > c_char ?
+                (LCD_COL - c_char)/2 + 1 : 0);
+    }
 #endif
 
 void lcd_cursor(uint8_t x, uint8_t y)
@@ -167,22 +211,6 @@ void lcd_cursor(uint8_t x, uint8_t y)
 			break;
 	#endif
 	}
-}
-
-void lcd_cursor_on(void)
-{
-	lcd_write_cmd( LCD_ONOFF | LCD_DISP_ON | LCD_CURSOR_ON );
-	#if LCD_RW == 0
-		_delay_ms(4.1);
-	#endif
-}
-
-void lcd_cursor_off(void)
-{
-	lcd_write_cmd( LCD_ONOFF | LCD_DISP_ON | LCDC_CURSOR_OFF );
-	#if LCD_RW == 0
-		_delay_ms(4.1);
-	#endif
 }
 
 void lcd_cls(void)

@@ -73,6 +73,13 @@ void lcd_cursor(uint8_t x, uint8_t y);
 void lcd_write_char(char data);
 void lcd_cls(void);
 void lcd_write_text(char* text, uint8_t row, uint8_t col);
+
+#if CFG_WRITE_TEXT_P
+void lcd_write_text_P(char* text, uint8_t row, uint8_t col);
+#endif
+#if CFG_WRITE_TEXT_E
+void lcd_write_text_E(char* text, uint8_t row, uint8_t col);
+#endif
 #if CFG_CURSOR_ON
     void lcd_cursor_on(void);
 #endif

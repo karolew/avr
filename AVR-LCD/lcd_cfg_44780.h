@@ -39,15 +39,19 @@
 #define LCD_D7_PIN              5
 
 /* Enables/disables functions, control lighter version of library. */
+/* lcd_write_text_P */
+#define CFG_WRITE_TEXT_P            1
+/* lcd_write_text_E */
+#define CFG_WRITE_TEXT_E            1
 /* lcd_cursor_on */
 #define CFG_CURSOR_OFF              1
 /* lcd_cursor_off */
 #define CFG_CURSOR_ON               1
-/* lcd_write_text_center */
-#define CFG_WRITE_TEXT_CENTER       1
 /* lcd_shift_right */
 #define CFG_SHIFT_RIGHT             1
 /* lcd_shift_left */
 #define CFG_SHIFT_LEFT              1
+/* lcd_write_text_center */
+#define CFG_WRITE_TEXT_CENTER       1
 
 #endif

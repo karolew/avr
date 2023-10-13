@@ -13,13 +13,15 @@ void set_data_port_out(void)
 }
 
 
-void set_data_port_in(void)
-{
-	DDR(LCD_D4_PORT) &= ~(1<<LCD_D4_PIN);
-	DDR(LCD_D5_PORT) &= ~(1<<LCD_D5_PIN);
-	DDR(LCD_D6_PORT) &= ~(1<<LCD_D6_PIN);
-	DDR(LCD_D7_PORT) &= ~(1<<LCD_D7_PIN);
-}
+#if LCD_RW
+    void set_data_port_in(void)
+    {
+        DDR(LCD_D4_PORT) &= ~(1<<LCD_D4_PIN);
+        DDR(LCD_D5_PORT) &= ~(1<<LCD_D5_PIN);
+        DDR(LCD_D6_PORT) &= ~(1<<LCD_D6_PIN);
+        DDR(LCD_D7_PORT) &= ~(1<<LCD_D7_PIN);
+    }
+#endif
 
 
 void set_control_port_out(void)
@@ -55,6 +57,7 @@ void set_control_port_in(void)
 		return data;
 	}
 
+
 	uint8_t lcd_read_byte(void)
 	{
 		set_data_port_in();
@@ -65,11 +68,13 @@ void set_control_port_in(void)
 		return data;
 	}
 
+
 	uint8_t lcd_read_flag(void)
 	{
 		CLR_RS;
 		return lcd_read_byte();
 	}
+
 
 	void lcd_check_busy(void)
 	{
@@ -125,6 +130,7 @@ void lcd_write_char(char data)
 	lcd_write_byte((data <= 0x87 && data >= 0x80) ? data & 0x07 : data);
 }
 
+
 void lcd_write_text(char* text, uint8_t row, uint8_t col)
 {
 	lcd_cursor(col, row);
@@ -136,6 +142,41 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
 	}
 }
 
+
+#if CFG_WRITE_TEXT_P
+    #include <avr/pgmspace.h>
+    void lcd_write_text_P(char* text, uint8_t row, uint8_t col)
+    {
+        register char znak;
+        lcd_cursor(col, row);
+        while((znak = pgm_read_byte(text++)) && row < LCD_ROW)
+        {
+            lcd_write_char(znak);
+            if(++col % LCD_COL == 0)
+                lcd_cursor(0, ++row);
+        }
+    }
+#endif
+
+
+#if CFG_WRITE_TEXT_E
+    #include <avr/eeprom.h>
+    void lcd_write_text_E(char* text, uint8_t row, uint8_t col)
+    {
+        register char znak;
+        lcd_cursor(col, row);
+        while(row < LCD_ROW)
+        {
+            znak = eeprom_read_byte((uint8_t *)text++);
+            if (!znak || znak == 0xFF) break;
+            lcd_write_char(znak);
+            if(++col % LCD_COL == 0)
+                lcd_cursor(0, ++row);
+        }
+    }
+#endif
+
+
 #if CFG_CURSOR_ON
     void lcd_cursor_on(void)
     {
@@ -145,6 +186,8 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
         #endif
     }
 #endif
+
+
 #if CFG_CURSOR_OFF
     void lcd_cursor_off(void)
     {
@@ -154,6 +197,8 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
         #endif
     }
 #endif
+
+
 #if CFG_SHIFT_RIGHT
     void lcd_shift_right(uint8_t col)
     {
@@ -166,6 +211,8 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
         }
     }
 #endif
+
+
 #if CFG_SHIFT_LEFT
     void lcd_shift_left(uint8_t col)
     {
@@ -178,6 +225,8 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
         }
     }
 #endif
+
+
 #if CFG_WRITE_TEXT_CENTER
     void lcd_write_text_center(char* text, uint8_t row)
     {
@@ -189,6 +238,7 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
                 (LCD_COL - c_char)/2 + 1 : 0);
     }
 #endif
+
 
 void lcd_cursor(uint8_t x, uint8_t y)
 {
@@ -213,6 +263,7 @@ void lcd_cursor(uint8_t x, uint8_t y)
 	}
 }
 
+
 void lcd_cls(void)
 {
 	lcd_write_cmd( LCD_CLEAR );
@@ -220,6 +271,7 @@ void lcd_cls(void)
 		_delay_ms(4.1);
 	#endif
 }
+
 
 void lcd_init(void)
 {

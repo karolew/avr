@@ -182,7 +182,7 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
     void lcd_def_special_char(uint8_t addr, uint8_t *znak)
     {
         lcd_write_cmd(LCDC_SET_CGRAM + (addr & SPECIAL_CHAR_ADDR_MASK) * 8);
-        while(*znak < SPECIAL_CHAR_END_BYTE_9)
+        for(register uint8_t i = 0 ; i< 8 ; i++)
             lcd_write_char(*znak++);
     }
 #endif
@@ -192,10 +192,9 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
     #include <avr/pgmspace.h>
     void lcd_def_special_char_P(uint8_t addr, uint8_t *znak)
     {
-        register uint8_t data;
         lcd_write_cmd(LCDC_SET_CGRAM + (addr & SPECIAL_CHAR_ADDR_MASK) * 8);
-        while((data = pgm_read_byte(znak++)) < SPECIAL_CHAR_END_BYTE_9)
-            lcd_write_char(data);
+        for(register uint8_t i = 0 ; i< 8 ; i++)
+            lcd_write_char(pgm_read_byte(znak++));
     }
 #endif
 
@@ -204,10 +203,9 @@ void lcd_write_text(char* text, uint8_t row, uint8_t col)
     #include <avr/eeprom.h>
     void lcd_def_special_char_E(uint8_t addr, uint8_t *znak)
     {
-        register uint8_t data;
         lcd_write_cmd(LCDC_SET_CGRAM + (addr & SPECIAL_CHAR_ADDR_MASK) * 8);
-        while((data = eeprom_read_byte(znak++)) < SPECIAL_CHAR_END_BYTE_9)
-            lcd_write_char(data);
+        for(register uint8_t i = 0 ; i< 8 ; i++)
+            lcd_write_char(eeprom_read_byte(znak++));
     }
 #endif
 

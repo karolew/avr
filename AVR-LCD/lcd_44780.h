@@ -69,7 +69,6 @@
 
 /* Special char control
  * 0x80 - 0x87 CGRAM addresses used to map 0 - 7 ASCII codes */
-#define SPECIAL_CHAR_END_BYTE_9     0x20
 #define SPECIAL_CHAR_ADDR_START     0x80
 #define SPECIAL_CHAR_ADDR_STOP      0x87
 #define SPECIAL_CHAR_ADDR_MASK      0x07

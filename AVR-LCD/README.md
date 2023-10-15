@@ -9,4 +9,5 @@ Library for LCD displays based on a HD44780 compatible controller.
 * Include lcd_44780.h and call lcd_init().
 
 ## Notes
-When LCD_RW is set to 0, additional delays may be required after lcd_cls() calls.
+* When LCD_RW is set to 0, additional delays may be required after lcd_cls() calls.
+* Special char definition must contain 9 bytes, and last byte must be SPECIAL_CHAR_END_BYTE_9

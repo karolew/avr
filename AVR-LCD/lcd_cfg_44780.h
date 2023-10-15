@@ -43,9 +43,15 @@
 #define CFG_WRITE_TEXT_P            1
 /* lcd_write_text_E */
 #define CFG_WRITE_TEXT_E            1
-/* lcd_cursor_on */
-#define CFG_CURSOR_OFF              1
+/* lcd_def_special_char */
+#define CFG_DEF_SPECIAL_CHAR        1
+/* lcd_def_special_char_P */
+#define CFG_DEF_SPECIAL_CHAR_P      1
+/* lcd_def_special_char_E */
+#define CFG_DEF_SPECIAL_CHAR_E      1
 /* lcd_cursor_off */
+#define CFG_CURSOR_OFF              1
+/* lcd_cursor_on */
 #define CFG_CURSOR_ON               1
 /* lcd_shift_right */
 #define CFG_SHIFT_RIGHT             1

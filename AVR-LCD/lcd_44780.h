@@ -67,18 +67,34 @@
 #define LCDC_SET_DDRAM              0x80
 
 
-/*Public LCD functions*/
+/* Special char control
+ * 0x80 - 0x87 CGRAM addresses used to map 0 - 7 ASCII codes */
+#define SPECIAL_CHAR_END_BYTE_9     0x20
+#define SPECIAL_CHAR_ADDR_START     0x80
+#define SPECIAL_CHAR_ADDR_STOP      0x87
+#define SPECIAL_CHAR_ADDR_MASK      0x07
+
+
+/* Public LCD functions */
 void lcd_init(void);
 void lcd_cursor(uint8_t x, uint8_t y);
 void lcd_write_char(char data);
 void lcd_cls(void);
 void lcd_write_text(char* text, uint8_t row, uint8_t col);
-
 #if CFG_WRITE_TEXT_P
-void lcd_write_text_P(char* text, uint8_t row, uint8_t col);
+    void lcd_write_text_P(char* text, uint8_t row, uint8_t col);
 #endif
 #if CFG_WRITE_TEXT_E
-void lcd_write_text_E(char* text, uint8_t row, uint8_t col);
+    void lcd_write_text_E(char* text, uint8_t row, uint8_t col);
+#endif
+#if CFG_DEF_SPECIAL_CHAR
+    void lcd_def_special_char(uint8_t addr, uint8_t *znak);
+#endif
+#if CFG_DEF_SPECIAL_CHAR_P
+    void lcd_def_special_char_P(uint8_t addr, uint8_t *znak);
+#endif
+#if CFG_DEF_SPECIAL_CHAR_E
+    void lcd_def_special_char_E(uint8_t addr, uint8_t *znak);
 #endif
 #if CFG_CURSOR_ON
     void lcd_cursor_on(void);
